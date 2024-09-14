@@ -15,6 +15,10 @@ const bot = new node_vk_bot_api_1.default({
 });
 bot.on(async (ctx) => {
     try {
+        const currentTime = Math.floor((Date.now() - 10 * 1000) / 1000);
+        const isOld = ctx.message.date < currentTime;
+        if (isOld)
+            return;
         await core_1.core.sendMessage(ctx);
     }
     catch (e) {
@@ -30,6 +34,7 @@ bot.command('/clear', async (ctx) => {
         console.error(e);
     }
 });
+bot.startPolling();
 app.use(body_parser_1.default.json());
 // @ts-ignore-next-line
 app.post('/', bot.webhookCallback);

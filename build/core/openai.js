@@ -24,11 +24,13 @@ class OpenAi {
             try {
                 const messages = { role: 'user', content: message };
                 this.pushToStack(messages);
+                console.log(this.stack);
                 const response = await this.openai.chat.completions.create({
                     model: 'gpt-4o-mini',
                     messages: this.stack,
                 });
-                const responseMessage = response?.choices?.[0]?.message.content;
+                const responseMessage = response?.choices?.[0]?.message?.content;
+                console.log('responseMessage', responseMessage);
                 if (responseMessage) {
                     this.pushToStack({ role: 'assistant', content: responseMessage });
                 }
@@ -42,4 +44,4 @@ class OpenAi {
         this.stack = [];
     }
 }
-exports.openAI = new OpenAi({ apiKey: env_1.TOKEN, baseURL: 'https://api.proxyapi.ru/openai/v1' });
+exports.openAI = new OpenAi({ apiKey: env_1.OPEN_API_KEY, baseURL: 'https://api.proxyapi.ru/openai/v1' });

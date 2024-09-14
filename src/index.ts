@@ -12,7 +12,10 @@ const bot = new VkBot({
 
 bot.on(async (ctx) => {
   try {
-    console.error('1', ctx);
+    const currentTime = Math.floor((Date.now() - 10*1000) / 1000);
+    const isOld = ctx.message.date < currentTime;
+
+    if (isOld) return;
 
     await core.sendMessage(ctx);
   } catch (e) {
@@ -27,6 +30,8 @@ bot.command('/clear', async (ctx) => {
     console.error(e);
 }});
 
+
+// bot.startPolling();
 
 app.use(bodyParser.json());
 

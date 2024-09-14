@@ -1,6 +1,6 @@
 import OpenAI, { ClientOptions } from 'openai';
 import { ChatCompletionMessageParam } from 'openai/resources';
-import { TOKEN } from '../constants/env';
+import { OPEN_API_KEY } from '../constants/env';
 
 const MAX_LENGTH_CONTEXT = 10;
 
@@ -31,12 +31,16 @@ class OpenAi {
 
       this.pushToStack(messages);
 
+      console.log(this.stack)
+
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4o-mini',
         messages: this.stack,
       });
 
-      const responseMessage = response?.choices?.[0]?.message.content;
+      const responseMessage = response?.choices?.[0]?.message?.content;
+
+      console.log('responseMessage', responseMessage)
 
       if (responseMessage) {
         this.pushToStack({role: 'assistant', content: responseMessage});
@@ -49,4 +53,4 @@ class OpenAi {
   };
 }
 
-export const openAI = new OpenAi({ apiKey: TOKEN, baseURL: 'https://api.proxyapi.ru/openai/v1' });
+export const openAI = new OpenAi({ apiKey: OPEN_API_KEY, baseURL: 'https://api.proxyapi.ru/openai/v1' });

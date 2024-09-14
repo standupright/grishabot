@@ -5,12 +5,9 @@ class Core {
   sendMessage = async (ctx: VkBotContext) => {
       const message = ctx.message.text;
 
-      console.error('ctx', ctx);
-
       const isValidMessage =  message?.includes('Гриша');
 
       if (!isValidMessage || !message) {
-        await ctx.reply('Не валидное сообщение');
         return;
       };
 
