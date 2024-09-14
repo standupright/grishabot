@@ -31,16 +31,12 @@ class OpenAi {
 
       this.pushToStack(messages);
 
-      console.log(this.stack)
-
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4o-mini',
         messages: this.stack,
       });
 
       const responseMessage = response?.choices?.[0]?.message?.content;
-
-      console.log('responseMessage', responseMessage)
 
       if (responseMessage) {
         this.pushToStack({role: 'assistant', content: responseMessage});
