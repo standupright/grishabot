@@ -33,6 +33,6 @@ bot.command('/clear', async (ctx) => {
 app.use(body_parser_1.default.json());
 // @ts-ignore-next-line
 app.post('/', bot.webhookCallback);
-app.listen(env_1.PORT);
+app.listen(env_1.PORT || 3000);
 process.once('SIGINT', () => bot.stop());
 process.once('SIGTERM', () => bot.stop());

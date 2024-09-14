@@ -6,4 +6,4 @@ const dotenv_1 = require("dotenv");
 exports.TOKEN = process.env.TOKEN || '';
 exports.CONFIRMATION = process.env.CONFIRMATION || '';
 exports.OPEN_API_KEY = process.env.OPEN_API_KEY || '';
-exports.PORT = process.env.PORT || '';
+exports.PORT = process.env.APP_PORT || '';

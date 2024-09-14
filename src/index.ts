@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 app.post('/', bot.webhookCallback);
 
 
-app.listen(PORT);
+app.listen(PORT || 3000);
 
 process.once('SIGINT', () => bot.stop())
 process.once('SIGTERM', () => bot.stop())
