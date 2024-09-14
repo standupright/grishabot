@@ -12,7 +12,7 @@ const bot = new VkBot({
 
 bot.on(async (ctx) => {
   try {
-    console.log('1', ctx);
+    console.error('1', ctx);
 
     await core.sendMessage(ctx);
   } catch (e) {

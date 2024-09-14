@@ -5,7 +5,7 @@ class Core {
   sendMessage = async (ctx: VkBotContext) => {
       const message = ctx.message.text;
 
-      console.log('ctx', ctx);
+      console.error('ctx', ctx);
 
       const isValidMessage =  message?.includes('Гриша');
 
