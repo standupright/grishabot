@@ -8,7 +8,6 @@ const core_1 = require("./core");
 const env_1 = require("constants/env");
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
-// typescript disable
 const app = (0, express_1.default)();
 const bot = new node_vk_bot_api_1.default({
     token: env_1.TOKEN,
@@ -32,9 +31,8 @@ bot.command('/clear', async (ctx) => {
     }
 });
 app.use(body_parser_1.default.json());
-app.post('/confirmation', (req, res) => {
-    res.status(200).send(env_1.CONFIRMATION);
-});
+// @ts-ignore-next-line
+app.post('/', bot.webhookCallback);
 app.listen(env_1.PORT);
 process.once('SIGINT', () => bot.stop());
 process.once('SIGTERM', () => bot.stop());

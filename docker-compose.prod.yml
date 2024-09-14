@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  grishabot:
+    container_name: grishabot
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: production
+        RUNTIME: prod
+    env_file: ./.env
+    volumes:
+      - ../angstorage:/app/storage
+    networks:
+      - grishabot
+    ports:
+      - ${APP_PORT}:3000
+    restart: unless-stopped
+
+networks:
+  grishabot:
+    name: grishabot

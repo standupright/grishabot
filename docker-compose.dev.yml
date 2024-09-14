@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  angels-main:
+    container_name: angels-main
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: development
+        RUNTIME: prod
+    env_file: ./.env
+    volumes:
+      - ./storage:/app/storage
+    networks:
+      - angels-deploy
+      - angels-main
+    ports:
+      - ${APP_PORT}:3000
+    restart: unless-stopped
+
+networks:
+  angels-deploy:
+    name: angels-deploy
+  angels-main:
+    name: angels-main
