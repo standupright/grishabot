@@ -4,7 +4,6 @@ import { CONFIRMATION, PORT, TOKEN } from 'constants/env';
 import express from 'express';
 import bodyParser from 'body-parser';
 
-// typescript disable
 const app = express();
 const bot = new VkBot({
   token: TOKEN,
@@ -29,9 +28,8 @@ bot.command('/clear', async (ctx) => {
 
 app.use(bodyParser.json());
 
-app.post('/confirmation', (req, res) => {
-  res.status(200).send(CONFIRMATION)
-});
+// @ts-ignore-next-line
+app.post('/', bot.webhookCallback);
 
 
 app.listen(PORT);
