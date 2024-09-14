@@ -28,8 +28,11 @@ bot.command('/clear', async (ctx) => {
 
 
 app.use(bodyParser.json());
-//@ts-ignore nex-line
-app.post('/confirmation', bot.webhookCallback);
+
+app.post('/confirmation', (req, res) => {
+  res.status(200).send(CONFIRMATION)
+});
+
 
 app.listen(PORT);
 

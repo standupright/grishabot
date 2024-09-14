@@ -22,9 +22,19 @@ bot.on(async (ctx) => {
         console.error(e);
     }
 });
+bot.command('/clear', async (ctx) => {
+    try {
+        await core_1.openAI.clearStack();
+        await ctx.reply('Все забыл');
+    }
+    catch (e) {
+        console.error(e);
+    }
+});
 app.use(body_parser_1.default.json());
-//@ts-ignore nex-line
-app.post('/', bot.webhookCallback);
+app.post('/confirmation', (req, res) => {
+    res.status(200).send(env_1.CONFIRMATION);
+});
 app.listen(env_1.PORT);
 process.once('SIGINT', () => bot.stop());
 process.once('SIGTERM', () => bot.stop());

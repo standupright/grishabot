@@ -5,7 +5,6 @@ const openai_1 = require("./openai");
 class Core {
     constructor() {
         this.sendMessage = async (ctx) => {
-            console.log('ctx', ctx);
             const message = ctx.message.text;
             const isValidMessage = message?.includes('Гриша');
             if (!isValidMessage || !message)
