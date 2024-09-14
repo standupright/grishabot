@@ -29,7 +29,7 @@ bot.command('/clear', async (ctx) => {
 
 app.use(bodyParser.json());
 //@ts-ignore nex-line
-app.post('/', bot.webhookCallback);
+app.post('/confirmation', bot.webhookCallback);
 
 app.listen(PORT);
 
