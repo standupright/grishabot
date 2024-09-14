@@ -1,14 +1,18 @@
 
-import { ChatCompletionMessageParam } from 'openai/resources';
 import { openAI } from './openai';
 
 class Core {
   sendMessage = async (ctx: VkBotContext) => {
       const message = ctx.message.text;
 
+      console.log('ctx', ctx);
+
       const isValidMessage =  message?.includes('Гриша');
 
-      if (!isValidMessage || !message) return;
+      if (!isValidMessage || !message) {
+        await ctx.reply('Не валидное сообщение');
+        return;
+      };
 
       const messageFromBot = message.replace('Гриша', '');
 
