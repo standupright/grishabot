@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@default": ["./src"],
+      "@config": ["./src/config/index.ts"],
+      "@core": ["./src/core/index.ts"],
+      "@lib": ["./src/lib/index.ts"],
+      "@constants": ["./src/constants/index.ts"]
+    }
+  }
+}
