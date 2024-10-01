@@ -2,7 +2,7 @@ import OpenAI, { ClientOptions } from 'openai';
 import { ChatCompletionMessageParam } from 'openai/resources';
 import { OPEN_API_KEY } from '../constants/env';
 
-const MAX_LENGTH_CONTEXT = 10;
+const MAX_LENGTH_CONTEXT = 5;
 
 class OpenAi {
   private openai: OpenAI;
