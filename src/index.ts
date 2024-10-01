@@ -20,7 +20,7 @@ bot.on(async (ctx) => {
 
 bot.command('/clear', async (ctx) => {
   try {
-    await openAI.clearStack();
+    await openAI.clearQueue();
     await ctx.reply('Все забыл')
   } catch (e) {
     console.error(e);

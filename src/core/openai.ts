@@ -33,7 +33,7 @@ class OpenAi {
     }
   }
 
-  public clearqueue = () => {
+  public clearQueue = () => {
       this.queue = []
   }
 
