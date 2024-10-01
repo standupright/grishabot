@@ -66,7 +66,7 @@ class OpenAi {
 
 
       const response = await this.openai.chat.completions.create({
-        model: 'o1-mini',
+        model: 'gpt-4o-mini',
         messages: [this.systemMessage, ...this.queue],
       });
 
