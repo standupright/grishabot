@@ -6,40 +6,74 @@ const MAX_LENGTH_CONTEXT = 10;
 
 class OpenAi {
   private openai: OpenAI;
-  private stack: ChatCompletionMessageParam[];
+  private queue: ChatCompletionMessageParam[];
+  private systemMessage: ChatCompletionMessageParam;
+  private systemConfMessage: ChatCompletionMessageParam;
 
   constructor(properties: ClientOptions){
     this.openai = new OpenAI(properties);
-    this.stack = [];
-  }
+    this.queue = [];
+    this.systemMessage = {
+      role: 'system',
+      content: "Вы являетесь участником чата, который называется котики. Вас зовут Гриша Зерно. Вы умеете троллить, подкалывать, шутить. Вам будут предоставлены сообщения участников. Отвечайте в ироничном стиле, используйте сарказм, шутки, мат, приколы, мемы из интернета, подъебы, панчи, можете заигрывать с участниками беседы. Отвечайте кратко, емко, иронично. Запомни, ты обожаешь этих людей, но обязан шутить над ними и издеваться."
+    }
 
-  private pushToStack = (message: ChatCompletionMessageParam) => {
-    if (this.stack.length < MAX_LENGTH_CONTEXT) {
-      this.stack.push(message)
-    } else {
-      this.stack = [message];
+    this.systemConfMessage = {
+      role: 'system',
+      content: "Вы являетесь участником чата, который называется котики. Вас зовут Гриша Зерно. Вы умеете троллить, подкалывать, шутить. Вам будут предоставлены сообщения участников. Отвечайте в ироничном стиле, используйте сарказм, шутки, мат, приколы, мемы из интернета, подъебы, панчи, можете заигрывать с участниками беседы. Отвечайте кратко, емко, иронично. Тебе будет представлен список конкретных сообщений в чате. Тебе нужно ответить на конкретную тему обсуждения, так будто ты участник этой беседы."
     }
   }
 
-  public clearStack = () => {
-      this.stack = []
+  private pushToQueue = (message: ChatCompletionMessageParam) => {
+    if (this.queue.length < MAX_LENGTH_CONTEXT) {
+      this.queue.push(message)
+    } else {
+      this.queue.shift();
+      this.queue.push(message);
+    }
   }
 
-  sendMessageToOpenAi =  async (message: string) => {
-    try {
-      const messages: ChatCompletionMessageParam = { role: 'user', content: message };
+  public clearqueue = () => {
+      this.queue = []
+  }
 
-      this.pushToStack(messages);
+  sendConfMessagesToOpenAi =  async (message: string[]) => {
+    try {
+      const messages: ChatCompletionMessageParam[] = message.map((el) => ({role: 'user', content: el}));
 
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4o-mini',
-        messages: this.stack,
+        messages: [this.systemConfMessage, ...messages],
       });
 
       const responseMessage = response?.choices?.[0]?.message?.content;
 
       if (responseMessage) {
-        this.pushToStack({role: 'assistant', content: responseMessage});
+        this.pushToQueue({role: 'assistant', content: responseMessage});
+      }
+
+      return responseMessage;
+    } catch (error) {
+      console.error('Open ai error', error);
+    }
+  };
+
+  sendMessageToOpenAi =  async (message: string) => {
+    try {
+      const messages: ChatCompletionMessageParam = { role: 'user', content: message };
+
+      this.pushToQueue(messages);
+
+
+      const response = await this.openai.chat.completions.create({
+        model: 'o1-mini',
+        messages: [this.systemMessage, ...this.queue],
+      });
+
+      const responseMessage = response?.choices?.[0]?.message?.content;
+
+      if (responseMessage) {
+        this.pushToQueue({role: 'assistant', content: responseMessage});
       }
 
       return responseMessage;
