@@ -1,6 +1,8 @@
 
 import { openAI } from './openai';
 
+const CONF_LENGTH = 15;
+
 class Core {
   private counter: number;
   private messageQueue: string[];
@@ -11,7 +13,7 @@ class Core {
   };
 
   private increase = () => {
-    if (this.counter > 20) {
+    if (this.counter > CONF_LENGTH) {
       this.counter = 0;
     } else {
       this.counter = this.counter + 1;
@@ -19,7 +21,7 @@ class Core {
   }
 
   private pushToQueue = (message: string) => {
-    if (this.messageQueue.length < 20) {
+    if (this.messageQueue.length < CONF_LENGTH) {
       this.messageQueue.push(message)
     } else {
       this.messageQueue.shift();
@@ -27,6 +29,7 @@ class Core {
     }
   }
 
+// todo: refactor
   sendMessage = async (ctx: VkBotContext) => {
       const message = ctx.message.text;
 
@@ -36,8 +39,21 @@ class Core {
       }
 
 
-      if (this.counter === 20) {
+      if (this.counter === CONF_LENGTH) {
         const reply = await openAI.sendConfMessagesToOpenAi(this.messageQueue);
+
+        const messageToSend = reply || 'Затрудняюсь ответить'
+
+        await ctx.reply(messageToSend);
+      }
+
+      const isNormalContext = message?.includes('Григорий');
+
+      if (isNormalContext && message) {
+
+        const messageFromBot = message.replace('Григорий', '');
+
+        const reply = await openAI.sendMessageToOpenAi(messageFromBot, 'normal');
 
         const messageToSend = reply || 'Затрудняюсь ответить'
 

@@ -15,7 +15,7 @@ class OpenAi {
     this.queue = [];
     this.systemMessage = {
       role: 'system',
-      content: "Вы являетесь участником чата, который называется котики. Вас зовут Гриша Зерно. Вы умеете троллить, подкалывать, шутить. Вам будут предоставлены сообщения участников. Отвечайте в ироничном стиле, используйте сарказм, шутки, мат, приколы, мемы из интернета, подъебы, панчи, можете заигрывать с участниками беседы. Отвечайте кратко, емко, иронично. Запомни, ты обожаешь этих людей, но обязан шутить над ними и издеваться."
+      content: "Вы являетесь участником чата, который называется котики. Вас зовут Гриша Зерно. Вы умеете троллить, подкалывать, шутить. Вам будут предоставлены сообщения участников. Отвечайте в ироничном стиле, используйте сарказм, шутки, мат, приколы, мемы из интернета, подъебы, панчи, можете заигрывать с участниками беседы. Отвечайте кратко, емко, иронично. Ты немного рассист и умеешь пошло шутить. Запомни, ты обожаешь этих людей, но обязан шутить над ними и издеваться, а также пошло шутить."
     }
 
     this.systemConfMessage = {
@@ -58,16 +58,17 @@ class OpenAi {
     }
   };
 
-  sendMessageToOpenAi =  async (message: string) => {
+  sendMessageToOpenAi =  async (message: string, context?: 'normal') => {
     try {
       const messages: ChatCompletionMessageParam = { role: 'user', content: message };
 
       this.pushToQueue(messages);
 
+      const messageToSent = context === 'normal' ? this.queue : [this.systemMessage, ...this.queue];
 
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4o-mini',
-        messages: [this.systemMessage, ...this.queue],
+        messages: messageToSent,
       });
 
       const responseMessage = response?.choices?.[0]?.message?.content;
