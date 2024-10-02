@@ -46,7 +46,9 @@ class Core {
 
         const messageToSend = reply || 'Затрудняюсь ответить'
 
-        await ctx.reply(messageToSend);
+        await ctx.reply(messageToSend, undefined, );
+
+        this.increase();
       }
 
       const isNormalContext = message?.includes('Григорий');
