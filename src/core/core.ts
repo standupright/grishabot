@@ -41,15 +41,15 @@ class Core {
       }
 
 
-      if (this.counter === COUNTER_LENGTH) {
-        const reply = await openAI.sendConfMessagesToOpenAi(this.messageQueue);
+      // if (this.counter === COUNTER_LENGTH) {
+      //   const reply = await openAI.sendConfMessagesToOpenAi(this.messageQueue);
 
-        const messageToSend = reply || 'Затрудняюсь ответить'
+      //   const messageToSend = reply || 'Затрудняюсь ответить'
 
-        await ctx.reply(messageToSend, undefined, );
+      //   await ctx.reply(messageToSend, undefined, );
 
-        this.increase();
-      }
+      //   this.increase();
+      // }
 
       const isNormalContext = message?.includes('Григорий');
 
